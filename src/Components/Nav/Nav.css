@@ -1,0 +1,17 @@
+.nav_header{
+    height: 90px;
+    width: 100%;
+    background-color: rgb(29, 145, 173);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.nav_header a{
+    margin: 30px;
+    color: antiquewhite;
+}
+.nav_header a:hover{
+    color: red;
+}

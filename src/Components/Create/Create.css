@@ -1,0 +1,10 @@
+.form-control{
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form{
+    margin-top: 50px;
+    margin-left: 50px;
+}
