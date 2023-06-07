@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import './Update.css'
 
 function Update() {
   const [id, setId] = useState(0);
@@ -24,7 +25,7 @@ function Update() {
   function updateHandler(e) {
     e.preventDefault();
 
-    if(autCustomerID,IndustryID,vchCustomerName,vchCity,vchPhone == ""){
+    if(autCustomerID,IndustryID,vchCustomerName,vchCity,vchPhone === ""){
       return
     }
     
@@ -39,7 +40,7 @@ function Update() {
       .then(() => goTo("/read"));
   }
   return (
-    <div>
+    <div className="main_update">
       <form className="form">
         <div className="mb-3">
           <label className="form-label">autCustomerID</label>
@@ -111,6 +112,8 @@ function Update() {
         </button>
       </form>
     </div>
+
+    
   );
 }
 

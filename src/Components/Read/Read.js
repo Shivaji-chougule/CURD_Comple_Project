@@ -1,9 +1,15 @@
 import axios from "axios";
+import './Read.css'
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import jsPDf from 'jspdf'
+import 'jspdf-autotable'
+import Modal from 'react-modal'
+import './Modal.css'
 function Read() {
   const [data, setData] = useState([]);
+  const [isModalOpen,setIsMOdalOpen]=useState(false)
+
   function getData() {
     axios
       .get("https://63afdcadcb0f90e5147bb901.mockapi.io/users")
@@ -12,16 +18,26 @@ function Read() {
         setData(res.data);
       });
   }
-  function handleDelete(id) {
-   
-    if (window.confirm("Confirm Delete")) {
-      axios
-      .delete(`https://63afdcadcb0f90e5147bb901.mockapi.io/users/${id}`)
-      .then(() => {
-        getData();
-      });
-    }
+  function handleDelete() {
+    setIsMOdalOpen(true)
+    
   }
+    function handleConfirm(id){
+      // if (window.confirm("Confirm Delete")) {
+        setIsMOdalOpen(false)
+        axios
+        .delete(`https://63afdcadcb0f90e5147bb901.mockapi.io/users/${id}`)
+        .then(() => {
+          getData();
+        });
+      // }
+      
+    }
+
+
+    function handleCancel(){
+      setIsMOdalOpen(false)
+    }
     
     
   function setLocalStorage(
@@ -42,9 +58,16 @@ function Read() {
   useEffect(() => {
     getData();
   }, []);
+
+  function formDownload(){
+      const pdf =new jsPDf()
+      pdf.autoTable({html:"#table"})
+      pdf.save("data.pdf")
+  }
+ 
   return (
-    <div>
-      <table className="table">
+    <div className="container">
+      <table className="table" id="table">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -53,11 +76,12 @@ function Read() {
             <th scope="col">vchCustomerName</th>
             <th scope="col">vchCity</th>
             <th scope="col">vchPhone</th>
+            <th scope="col"><button onClick={formDownload} className="btn-primary" >Download</button></th>
           </tr>
         </thead>
-        {data.map((eachData, i) => {
-          return (
-            <tbody key={i}>
+        {data.map((eachData) => 
+        
+            <tbody key={eachData.id}>
               <tr>
                 <th scope="row">{eachData.id}</th>
                 <td>{eachData.autCustomerID}</td>
@@ -86,19 +110,30 @@ function Read() {
                 </td>
                 <td>
                   <button
-                    onClick={() => {
-                      handleDelete(eachData.id);
-                    }}
+                    onClick={
+                      handleDelete
+                    }
                     className="btn-danger"
                   >
                     delete
                   </button>
+                  <Modal isOpen={isModalOpen} className="MyModal" overlayClassName="MyOverlay">
+        <p>Are you sure you want to delete?</p>
+        <div className="ButtonContainer">
+          <button className="ConfirmButton" onClick={() => {
+                      handleConfirm(eachData.id)
+                    }}>Confirm</button>
+          <button className="CancelButton" onClick={handleCancel}>Cancel</button>
+        </div>
+      </Modal>
+                  
                 </td>
               </tr>
             </tbody>
-          );
-        })}
+          
+        )}
       </table>
+     
     </div>
   );
 }

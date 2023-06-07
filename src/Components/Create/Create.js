@@ -38,7 +38,7 @@ function Create() {
   }
 
   return (
-    <div>
+    <div className="main">
       <form className="form">
         <div className="mb-3">
           <label className="form-label">autCustomerID</label>
